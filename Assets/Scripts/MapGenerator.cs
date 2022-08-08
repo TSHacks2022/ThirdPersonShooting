@@ -16,8 +16,6 @@ public class MapGenerator
 	private List<Range> passList = new List<Range>();
 	private List<Range> roomPassList = new List<Range>();
 
-	private bool isGenerated = false;
-
 	public int[,] GenerateMap(int mapSizeX, int mapSizeY, int maxRoom)
 	{
 		this.mapSizeX = mapSizeX;

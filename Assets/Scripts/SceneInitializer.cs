@@ -5,11 +5,15 @@ public class SceneInitializer : MonoBehaviour
 {
 
 	public const int MAP_SIZE_X = 30;
-	public const int MAP_SIZE_Y = 20;
+	public const int MAP_SIZE_Y = 30;
+
+    public const int ONE_TILE_SIZE = 3;
+	public const int ENEMY_NUM = 3;
 
 	public const int MAX_ROOM_NUMBER = 6;
 
 	public GameObject _player;
+	public GameObject _enemy;
 
 	private GameObject floorPrefab;
 	private GameObject wallPrefab;
@@ -24,6 +28,7 @@ public class SceneInitializer : MonoBehaviour
 
 		SponePlayer();
 
+		SponeEnemy();
 	}
 
 	private void GenerateMap()
@@ -53,11 +58,11 @@ public class SceneInitializer : MonoBehaviour
 			{
 				if (map[x, y] == 1)
 				{
-					Instantiate(floorPrefab, new Vector3(x, 0, y), new Quaternion());
+					Instantiate(floorPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
 				}
 				else
 				{
-					Instantiate(wallPrefab, new Vector3(x, 0, y), new Quaternion());
+					Instantiate(wallPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
 				}
 			}
 		}
@@ -79,7 +84,24 @@ public class SceneInitializer : MonoBehaviour
 			position = new Position(x, y);
 		} while (map[position.X, position.Y] != 1);
 
-		_player.transform.position = new Vector3(position.X, 0, position.Y);
+		_player.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
 	}
 
+	private void SponeEnemy()
+	{
+		if (!_enemy)
+		{
+			return;
+		}
+
+		Position position;
+		do
+		{
+			var x = RogueUtils.GetRandomInt(0, MAP_SIZE_X - 1);
+			var y = RogueUtils.GetRandomInt(0, MAP_SIZE_Y - 1);
+			position = new Position(x, y);
+		} while (map[position.X, position.Y] != 1);
+
+		_enemy.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
+	}
 }
