@@ -60,6 +60,9 @@ public class MapGenerator
 
 		TrimPassList(ref map);
 
+		// ‹æ‰æ“¯Žm‚ÌŒq‚ª‚è‚ðŠm”F‚·‚é
+		CheckRangeConnection(ref map);
+
 		return map;
 	}
 
@@ -370,4 +373,237 @@ public class MapGenerator
 		}
 	}
 
+	private Range SearchRange(int x, int y)
+    {
+		Range returnRange = new Range();
+
+		foreach (Range range in rangeList)
+        {
+			if (x >=range.Start.X && x <= range.End.X && y >= range.Start.Y && y <= range.End.Y)
+            {
+				returnRange = range;
+				break;
+            }
+        }
+
+		return returnRange;
+	}
+
+	private void CheckRangeConnection(ref int[,] map)
+    {
+		// Šù‚É’²‚×‚½‹æ‰æ‚ÌƒŠƒXƒg
+		List<Range> checkedRange = new List<Range>();
+		int maxTotalArea = 0;
+
+		foreach (Range range in rangeList)
+		{
+			// Šù‚É’²‚×‚½‹æ‰æ‚È‚ç”ò‚Î‚·
+			if (checkedRange.Contains(range))
+            {
+				continue;
+            }
+
+			checkedRange.Add(range);
+
+			Range connectedRange;
+			int x, y;
+			int startX = range.Start.X;
+			int startY = range.Start.Y;
+			int endX = range.End.X;
+			int endY = range.End.Y;
+			int area;
+
+			// ˆê”Ô¶‚Ì•Ó
+			x = startX;
+			if (x > 0)
+			{
+				for (y = range.Start.Y; y <= range.End.Y; y++)
+				{
+					// ¶‚Ì‹æ‰æ‚ÆŒq‚ª‚Á‚Ä‚¢‚é
+					if (map[x, y] == 1 && map[x - 1, y] == 1)
+                    {
+						connectedRange = SearchRange(x - 2, y);
+						if (!checkedRange.Contains(connectedRange))
+						{
+							checkedRange.Add(connectedRange);
+						}
+						bool isLimited;
+						// Œq‚ª‚Á‚Ä‚¢‚é‹æ‰æŒQ‚Ì¶’[‚Ü‚Å’²‚×‚é
+						do
+						{
+							isLimited = true;
+							x = connectedRange.Start.X;
+							if (x <= 0)
+                            {
+								break;
+                            }
+							for (y = connectedRange.Start.Y; y <= connectedRange.End.Y; y++)
+							{
+								if (map[x, y] == 1 && map[x - 1, y] == 1)
+								{
+									isLimited = false;
+									connectedRange = SearchRange(x - 2, y);
+									if (!checkedRange.Contains(connectedRange))
+									{
+										checkedRange.Add(connectedRange);
+									}
+								}
+							}
+						} while (!isLimited);
+						startX = connectedRange.Start.X;
+						break;
+					}
+				}
+			}
+			// ˆê”Ô‰E‚Ì•Ó
+			x = endX;
+			if (x < mapSizeX)
+			{
+				for (y = range.Start.Y; y <= range.End.Y; y++)
+				{
+					// ‰E‚Ì‹æ‰æ‚ÆŒq‚ª‚Á‚Ä‚¢‚é
+					if (map[x, y] == 1 && map[x + 1, y] == 1)
+					{
+						connectedRange = SearchRange(x + 2, y);
+						if (!checkedRange.Contains(connectedRange))
+						{
+							checkedRange.Add(connectedRange);
+						}
+						bool isLimited;
+						// Œq‚ª‚Á‚Ä‚¢‚é‹æ‰æŒQ‚Ì‰E’[‚Ü‚Å’²‚×‚é
+						do
+						{
+							isLimited = true;
+							x = connectedRange.End.X;
+							if (x >= mapSizeX)
+							{
+								break;
+							}
+							for (y = connectedRange.Start.Y; y <= connectedRange.End.Y; y++)
+							{
+								if (map[x, y] == 1 && map[x + 1, y] == 1)
+								{
+									isLimited = false;
+									connectedRange = SearchRange(x + 2, y);
+									if (!checkedRange.Contains(connectedRange))
+									{
+										checkedRange.Add(connectedRange);
+									}
+								}
+							}
+						} while (!isLimited);
+						endX = connectedRange.End.X;
+						break;
+					}
+				}
+			}
+			// ˆê”Ôã‚Ì•Ó
+			y = startY;
+			if (y > 0)
+			{
+				for (x = range.Start.X; x <= range.End.X; x++)
+				{
+					// ã‚Ì‹æ‰æ‚ÆŒq‚ª‚Á‚Ä‚¢‚é
+					if (map[x, y] == 1 && map[x, y - 1] == 1)
+					{
+						connectedRange = SearchRange(x, y - 2);
+						if (!checkedRange.Contains(connectedRange))
+						{
+							checkedRange.Add(connectedRange);
+						}
+						bool isLimited;
+						// Œq‚ª‚Á‚Ä‚¢‚é‹æ‰æŒQ‚Ìã’[‚Ü‚Å’²‚×‚é
+						do
+						{
+							isLimited = true;
+							y = connectedRange.Start.Y;
+							if (y <= 0)
+							{
+								break;
+							}
+							for (x = connectedRange.Start.X; x <= connectedRange.End.X; x++)
+							{
+								if (map[x, y] == 1 && map[x, y - 1] == 1)
+								{
+									isLimited = false;
+									connectedRange = SearchRange(x, y - 2);
+									if (!checkedRange.Contains(connectedRange))
+									{
+										checkedRange.Add(connectedRange);
+									}
+								}
+							}
+						} while (!isLimited);
+						startY = connectedRange.Start.Y;
+						break;
+					}
+				}
+			}
+			// ˆê”Ô‰º‚Ì•Ó
+			y = endY;
+			if (y > 0)
+			{
+				for (x = range.Start.X; x <= range.End.X; x++)
+				{
+					// ‰º‚Ì‹æ‰æ‚ÆŒq‚ª‚Á‚Ä‚¢‚é
+					if (map[x, y] == 1 && map[x, y + 1] == 1)
+					{
+						connectedRange = SearchRange(x, y + 2);
+						if (!checkedRange.Contains(connectedRange))
+						{
+							checkedRange.Add(connectedRange);
+						}
+						bool isLimited;
+						// Œq‚ª‚Á‚Ä‚¢‚é‹æ‰æŒQ‚Ì‰º’[‚Ü‚Å’²‚×‚é
+						do
+						{
+							isLimited = true;
+							y = connectedRange.End.Y;
+							if (y >= mapSizeY)
+							{
+								break;
+							}
+							for (x = connectedRange.Start.X; x <= connectedRange.End.X; x++)
+							{
+								if (map[x, y] == 1 && map[x, y + 1] == 1)
+								{
+									isLimited = false;
+									connectedRange = SearchRange(x, y + 2);
+									if (!checkedRange.Contains(connectedRange))
+									{
+										checkedRange.Add(connectedRange);
+									}
+								}
+							}
+						} while (!isLimited);
+						endY = connectedRange.End.Y;
+						break;
+					}
+				}
+			}
+
+			// Œq‚ª‚Á‚Ä‚¢‚é‹æ‰æŒQ‚Ì–ÊÏ‚ðŒvŽZ
+			area = (endX - startX) * (endY - startY);
+
+			// ¡‚Ì–ÊÏ‚ª‘O‚Ü‚Å‚ÌÅ‘å–ÊÏ‚æ‚è‘å‚«‚¯‚ê‚ÎXV
+			if (area > maxTotalArea)
+            {
+				maxTotalArea = area;
+            }
+			// ‚»‚¤‚Å‚È‚¯‚ê‚Î•Ç‚Å–„‚ß‚é
+			else
+            {
+				for (x = startX; x <= endX; x++)
+				{
+					for (y = startY; y <= endY; y++)
+					{
+						if (map[x, y] == 1)
+						{
+							map[x, y] = 0;
+						}
+					}
+				}
+			}
+		}
+	}
 }
