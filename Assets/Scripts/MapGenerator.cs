@@ -60,6 +60,14 @@ public class MapGenerator
 
 		TrimPassList(ref map);
 
+		//階段位置の設定　ここから//
+		Range stairRoom = roomList[Random.Range(0, roomList.Count)];
+		int stairX = Random.Range(stairRoom.Start.X, stairRoom.End.X+1);
+		int stairY = Random.Range(stairRoom.Start.Y, stairRoom.End.Y+1);
+
+		map[stairX, stairY] = 2;
+		//階段位置の設定　ここまで//
+
 		return map;
 	}
 
@@ -369,5 +377,4 @@ public class MapGenerator
 			}
 		}
 	}
-
 }

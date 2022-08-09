@@ -14,6 +14,7 @@ public class SceneInitializer : MonoBehaviour
 
 	public GameObject _player;
 	public GameObject _enemy;
+	public GameObject _stair;
 
 	private GameObject floorPrefab;
 	private GameObject wallPrefab;
@@ -38,7 +39,18 @@ public class SceneInitializer : MonoBehaviour
 		{
 			for (int x = 0; x < MAP_SIZE_X; x++)
 			{
-				log += map[x, y] == 0 ? " " : "1";
+				if(map[x, y] == 1)
+                {
+					log += "1";
+				}
+				else if(map[x, y] == 2)
+                {
+					log += "2";
+                }
+                else
+                {
+					log += " ";
+                }
 			}
 			log += "\n";
 		}
@@ -54,27 +66,15 @@ public class SceneInitializer : MonoBehaviour
 		var wallList = new List<Vector3>();
 
 
-		/*
 		for (int y = 0; y < MAP_SIZE_Y; y++)
 		{
 			for (int x = 0; x < MAP_SIZE_X; x++)
 			{
-				if (map[x, y] == 1)
+				if (map[x, y] == 2)
 				{
-					Instantiate(floorPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
+					_stair.transform.position = new Vector3(ONE_TILE_SIZE * x, 0.1f, ONE_TILE_SIZE * y);
 				}
-				else
-				{
-					Instantiate(wallPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
-				}
-			}
-		}
-		*/
-		for (int y = 0; y < MAP_SIZE_Y; y++)
-		{
-			for (int x = 0; x < MAP_SIZE_X; x++)
-			{
-				if (map[x, y] != 1)
+				else if (map[x, y] != 1)
 				{
 					Instantiate(wallPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
 				}
@@ -97,7 +97,6 @@ public class SceneInitializer : MonoBehaviour
 			position = new Position(x, y);
 		} while (map[position.X, position.Y] != 1);
 
-		//Instantiate(_player, new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y), Quaternion.identity);
 		_player.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
 	}
 
@@ -121,7 +120,5 @@ public class SceneInitializer : MonoBehaviour
 
 			Instantiate(_enemy, new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y), Quaternion.identity);
 		}
-		
-		//_enemy.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
 	}
 }
