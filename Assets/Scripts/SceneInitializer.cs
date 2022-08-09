@@ -109,14 +109,19 @@ public class SceneInitializer : MonoBehaviour
 		}
 
 		Position position;
-		do
-		{
-			var x = RogueUtils.GetRandomInt(0, MAP_SIZE_X - 1);
-			var y = RogueUtils.GetRandomInt(0, MAP_SIZE_Y - 1);
-			position = new Position(x, y);
-		} while (map[position.X, position.Y] != 1);
 
-		//Instantiate(_enemy, new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y), Quaternion.identity);
-		_enemy.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
+		for(int i = 0; i < ENEMY_NUM; i++)
+        {
+			do
+			{
+				var x = RogueUtils.GetRandomInt(0, MAP_SIZE_X - 1);
+				var y = RogueUtils.GetRandomInt(0, MAP_SIZE_Y - 1);
+				position = new Position(x, y);
+			} while (map[position.X, position.Y] != 1);
+
+			Instantiate(_enemy, new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y), Quaternion.identity);
+		}
+		
+		//_enemy.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
 	}
 }
