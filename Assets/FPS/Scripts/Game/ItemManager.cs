@@ -34,6 +34,14 @@ public class ItemManager : MonoBehaviour {
 		itemDictionary [key] += 1;
 		Debug.Log (key + " : " + GetNum(key));
 	}
+
+	public string GetInventory(){
+		string strText = "";
+		foreach (var item in itemDictionary) {
+			strText = strText + "\n" + item.Key + " : " + GetNum(item.Key);
+		}		
+		return strText;
+	}
  
 	//　アイテムをどれだけ持っているかの数を返す
 	public int GetNum(string key) {
