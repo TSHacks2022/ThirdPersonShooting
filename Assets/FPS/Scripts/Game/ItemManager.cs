@@ -6,43 +6,37 @@ public class ItemManager : MonoBehaviour {
 
 
 	public static ItemManager instance;
-	public void Awake()
-	{
-	if(instance == null)
-	{
-		instance = this;
-	}
+
+	public static ItemManager GetInstance(){
+		return instance;
 	}
  
-	//　アイテムの種類を設定
-	public enum Item {
-		Knife,
-		Sword,
-		Book
-	};
- 
-	Dictionary<Item, int> itemDictionary = new Dictionary<Item, int>();
+	Dictionary<string, int> itemDictionary = new Dictionary<string, int>();
  
 	// Use this for initialization
 	void Start () {
-		itemDictionary [Item.Knife] = 0;
-		itemDictionary [Item.Sword] = 0;
- 
+		instance = this;
+
+		itemDictionary.Add("Potion", 0);
+		itemDictionary.Add("HitPointPart", 0);
+		itemDictionary.Add("AttackPart", 0);
+		itemDictionary.Add("SpeedPart", 0);
+		itemDictionary.Add("Attack", 0);
+		itemDictionary.Add("Rapid", 0);
+
 		foreach (var item in itemDictionary) {
 			Debug.Log (item.Key + " : " + GetNum(item.Key));
 		}
 	}
 
     //　アイテムをどれだけ持っているかの数を返す
-	public void PickItem() {
-		itemDictionary [Item.Sword] += 1;
-		foreach (var item in itemDictionary) {
-			Debug.Log (item.Key + " : " + GetNum(item.Key));
-		}
+	public void PickItem(string key) {
+		itemDictionary [key] += 1;
+		Debug.Log (key + " : " + GetNum(key));
 	}
  
 	//　アイテムをどれだけ持っているかの数を返す
-	public int GetNum(Item key) {
+	public int GetNum(string key) {
 		return itemDictionary [key];
 	}
 }
