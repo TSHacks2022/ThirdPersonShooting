@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a7fb34f237c7c8e41ab49ce704df4bd0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - roads: {instanceID: 0}
+  - enemies: {instanceID: 0}
+  - items: {instanceID: 0}
+  - roadImage: {fileID: 2085103564132009885, guid: aa80c4829c902c2498fa37edd0fb77ec,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
