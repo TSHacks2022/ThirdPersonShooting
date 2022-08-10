@@ -10,13 +10,16 @@ public class MapGenerator
 	private int mapSizeX;
 	private int mapSizeY;
 	private int maxRoom;
+	private int stairRoomIdx;
+	private int playerRoomIdx;
 
 	private List<Range> roomList = new List<Range>();
 	private List<Range> rangeList = new List<Range>();
 	private List<Range> passList = new List<Range>();
 	private List<Range> roomPassList = new List<Range>();
 
-	public int[,] GenerateMap(int mapSizeX, int mapSizeY, int maxRoom)
+
+	public int[,] GenerateMap(int mapSizeX, int mapSizeY, int maxRoom, int enemyNum)
 	{
 		this.mapSizeX = mapSizeX;
 		this.mapSizeY = mapSizeY;
@@ -58,15 +61,9 @@ public class MapGenerator
 			}
 		}
 
-		TrimPassList(ref map);
+        TrimPassList(ref map);
 
-		//階段位置の設定　ここから//
-		Range stairRoom = roomList[Random.Range(0, roomList.Count)];
-		int stairX = Random.Range(stairRoom.Start.X, stairRoom.End.X+1);
-		int stairY = Random.Range(stairRoom.Start.Y, stairRoom.End.Y+1);
-
-		map[stairX, stairY] = 2;
-		//階段位置の設定　ここまで//
+		PlaceObjects(ref map, enemyNum);
 
 		return map;
 	}
@@ -375,6 +372,55 @@ public class MapGenerator
 					map[x, y] = 0;
 				}
 			}
+		}
+	}
+
+	private void PlaceObjects(ref int[,] map, int enemyNum)
+    {
+		PlacePlayer(ref map);
+		PlaceStair(ref map);
+		PlaceEnemy(ref map, enemyNum);
+    }
+
+	private void PlaceStair(ref int[,] map)
+    {
+		stairRoomIdx = Random.Range(0, roomList.Count);
+		Range stairRoom = roomList[stairRoomIdx];
+		int x = Random.Range(stairRoom.Start.X, stairRoom.End.X + 1);
+		int y = Random.Range(stairRoom.Start.Y, stairRoom.End.Y + 1);
+
+		map[x, y] = 2;
+	}
+
+	private void PlacePlayer(ref int[,] map)
+	{
+		do
+		{
+			playerRoomIdx = Random.Range(0, roomList.Count);
+		}
+		while (playerRoomIdx == stairRoomIdx);
+		Range playerRoom = roomList[playerRoomIdx];
+		int x = Random.Range(playerRoom.Start.X, playerRoom.End.X + 1);
+		int y = Random.Range(playerRoom.Start.Y, playerRoom.End.Y + 1);
+
+		map[x, y] = 3;
+	}
+
+	private void PlaceEnemy(ref int[,] map, int enemyNum)
+	{
+		int enemyRoomIdx;
+		for (int i = 0; i < enemyNum; i++)
+        {
+			do
+			{
+				enemyRoomIdx = Random.Range(0, roomList.Count);
+		}
+			while (enemyRoomIdx == stairRoomIdx || enemyRoomIdx == playerRoomIdx);
+			Range enemyRoom = roomList[enemyRoomIdx];
+			int x = Random.Range(enemyRoom.Start.X, enemyRoom.End.X + 1);
+			int y = Random.Range(enemyRoom.Start.Y, enemyRoom.End.Y + 1);
+
+			map[x, y] = 4;
 		}
 	}
 }

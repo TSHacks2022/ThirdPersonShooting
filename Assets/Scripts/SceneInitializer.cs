@@ -25,14 +25,14 @@ public class SceneInitializer : MonoBehaviour
 	void Start()
 	{
 		GenerateMap();
-		SponePlayer();
-		SponeEnemy();
+		//SponePlayer();
+		//SponeEnemy();
 		InstantiateMap();
 	}
 
 	private void GenerateMap()
 	{
-		map = new MapGenerator().GenerateMap(MAP_SIZE_X, MAP_SIZE_Y, MAX_ROOM_NUMBER);
+		map = new MapGenerator().GenerateMap(MAP_SIZE_X, MAP_SIZE_Y, MAX_ROOM_NUMBER, ENEMY_NUM);
 
 		string log = "";
 		for (int y = 0; y < MAP_SIZE_Y; y++)
@@ -72,11 +72,31 @@ public class SceneInitializer : MonoBehaviour
 			{
 				if (map[x, y] == 2)
 				{
-					_stair.transform.position = new Vector3(ONE_TILE_SIZE * x, 0.1f, ONE_TILE_SIZE * y);
+					_stair.transform.position = new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y);
+				}
+				else if (map[x, y] == 3)
+				{
+					_player.transform.position = new Vector3(ONE_TILE_SIZE * x, 0.1f, ONE_TILE_SIZE * y);
+				}
+				else if (map[x, y] == 4)
+				{
+					Instantiate(_enemy, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), Quaternion.identity);
 				}
 				else if (map[x, y] != 1)
 				{
-					Instantiate(wallPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
+					Instantiate(wallPrefab, new Vector3(ONE_TILE_SIZE * x, 2.5f, ONE_TILE_SIZE * y), new Quaternion());
+				}
+			}
+		}
+
+		for (int y = 0; y < MAP_SIZE_Y; y++)
+		{
+			for (int x = 0; x < MAP_SIZE_X; x++)
+			{
+				if (map[x, y] == 2)
+				{
+					_stair.transform.position = new Vector3(ONE_TILE_SIZE * x, 0.2f, ONE_TILE_SIZE * y);
+					break;
 				}
 			}
 		}
