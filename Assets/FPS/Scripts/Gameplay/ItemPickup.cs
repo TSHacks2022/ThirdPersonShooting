@@ -11,20 +11,23 @@ namespace Unity.FPS.Gameplay
     
     public class ItemPickup : Pickup 
     {
-        public string getItem="";
-        private GameObject manage;
 
         [Header("Parameters")] [Tooltip("Item name")]
         public string ItemName;
+        public static string pickedMessage = "";
+        public static bool pickedMessageFlag = false;
+        public static bool timeFlag = false;
         
         protected override void OnPicked(PlayerCharacterController player)
         {
             //text変更 
-            getItem=ItemName;
             ItemManager.instance.PickItem(ItemName);
             PlayPickupFeedback();
             Destroy(gameObject);
-            
+
+            pickedMessage = ItemName;
+            timeFlag = true;
+            pickedMessageFlag = true;
         }
     }
 }

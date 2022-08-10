@@ -39,7 +39,7 @@ public class ItemManager : MonoBehaviour {
 	public string GetInventory(){
 		string strText = "";
 		foreach (var item in itemDictionary) {
-			strText = strText + "\n" + item.Key + " : " + GetNum(item.Key);
+			strText = strText + item.Key + " : " + GetNum(item.Key) + "\n";
 		}		
 		return strText;
 	}
