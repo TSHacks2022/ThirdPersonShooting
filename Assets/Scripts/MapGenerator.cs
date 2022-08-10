@@ -399,6 +399,10 @@ public class MapGenerator
 		// Šù‚É’²‚×‚½‹æ‰æ‚ÌƒŠƒXƒg
 		List<Range> checkedRange = new List<Range>();
 		int maxTotalArea = 0;
+		int prevstartX = -1;
+		int prevstartY = -1;
+		int prevendX = -1;
+		int prevendY = -1;
 
 		foreach (Range range in rangeList)
 		{
@@ -594,6 +598,24 @@ public class MapGenerator
 			if (area > maxTotalArea)
 			{
 				maxTotalArea = area;
+				// ‘O‰ñ‚Ü‚ÅÅ‘å‚¾‚Á‚½‹æ‰æŒQ‚ğ–„‚ß‚é
+				if (prevstartX != -1)
+                {
+					for (x = prevstartX; x <= prevendX; x++)
+					{
+						for (y = prevstartY; y <= prevendY; y++)
+						{
+							if (map[x, y] == 1)
+							{
+								map[x, y] = 0;
+							}
+						}
+					}
+				}
+				prevstartX = startX;
+				prevstartY = startY;
+				prevendX = endX;
+				prevendY = endY;
 			}
 			// ‚»‚¤‚Å‚È‚¯‚ê‚Î•Ç‚Å–„‚ß‚é
 			else
