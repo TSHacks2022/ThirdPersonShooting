@@ -13,11 +13,13 @@ public class SceneInitializer : MonoBehaviour
 	public const int MAX_ROOM_NUMBER = 6;
 
 	public GameObject _player;
-	public GameObject _enemy;
 	public GameObject _stair;
 
 	private GameObject floorPrefab;
 	private GameObject wallPrefab;
+	private GameObject enemyPrefab;
+
+	private string enemyObject;
 
 	private int[,] map;
 
@@ -25,9 +27,9 @@ public class SceneInitializer : MonoBehaviour
 	void Start()
 	{
 		GenerateMap();
-		//SponePlayer();
-		//SponeEnemy();
+		EnemySelect();
 		InstantiateMap();
+		EnemyUpgrade();
 	}
 
 	private void GenerateMap()
@@ -59,8 +61,8 @@ public class SceneInitializer : MonoBehaviour
 
 	private void InstantiateMap()
     {
-		//floorPrefab = Resources.Load("Prefabs/Floor") as GameObject;
 		wallPrefab = Resources.Load("Prefabs/Wall") as GameObject;
+		enemyPrefab = Resources.Load(enemyObject) as GameObject;
 
 		var floorList = new List<Vector3>();
 		var wallList = new List<Vector3>();
@@ -80,7 +82,7 @@ public class SceneInitializer : MonoBehaviour
 				}
 				else if (map[x, y] == 4)
 				{
-					Instantiate(_enemy, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), Quaternion.identity);
+					Instantiate(enemyPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
 				}
 				else if (map[x, y] != 1)
 				{
@@ -88,57 +90,34 @@ public class SceneInitializer : MonoBehaviour
 				}
 			}
 		}
+	}
 
-		for (int y = 0; y < MAP_SIZE_Y; y++)
+	private void EnemyUpgrade()
+    {
+		Health _health;
+		var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+		foreach (var enemy in enemies)
 		{
-			for (int x = 0; x < MAP_SIZE_X; x++)
-			{
-				if (map[x, y] == 2)
-				{
-					_stair.transform.position = new Vector3(ONE_TILE_SIZE * x, 0.2f, ONE_TILE_SIZE * y);
-					break;
-				}
-			}
+			_health = enemy.GetComponent<Health>();
+			_health.MaxHealth += StaticData.floor * 10;
 		}
 	}
 
-	private void SponePlayer()
-	{
-		if (!_player)
-		{
-			return;
-		}
-
-		Position position;
-		do
-		{
-			var x = RogueUtils.GetRandomInt(0, MAP_SIZE_X - 1);
-			var y = RogueUtils.GetRandomInt(0, MAP_SIZE_Y - 1);
-			position = new Position(x, y);
-		} while (map[position.X, position.Y] != 1);
-
-		_player.transform.position = new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y);
-	}
-
-	private void SponeEnemy()
-	{
-		if (!_enemy)
-		{
-			return;
-		}
-
-		Position position;
-
-		for(int i = 0; i < ENEMY_NUM; i++)
+	private void EnemySelect()
+    {
+		if(StaticData.floor / 5 < 1)
         {
-			do
-			{
-				var x = RogueUtils.GetRandomInt(0, MAP_SIZE_X - 1);
-				var y = RogueUtils.GetRandomInt(0, MAP_SIZE_Y - 1);
-				position = new Position(x, y);
-			} while (map[position.X, position.Y] != 1);
+			enemyObject = "Prefabs/Enemy_HoverBot_Easy";
+		}
+		else if(StaticData.floor / 5 < 2)
+        {
+			enemyObject = "Prefabs/Enemy_HoverBot_Normal";
 
-			Instantiate(_enemy, new Vector3(ONE_TILE_SIZE * position.X, 0, ONE_TILE_SIZE * position.Y), Quaternion.identity);
+		}
+		else
+		{
+			enemyObject = "Prefabs/Enemy_HoverBot_Hard";
 		}
 	}
 }

@@ -377,8 +377,8 @@ public class MapGenerator
 
 	private void PlaceObjects(ref int[,] map, int enemyNum)
     {
-		PlacePlayer(ref map);
 		PlaceStair(ref map);
+		PlacePlayer(ref map);
 		PlaceEnemy(ref map, enemyNum);
     }
 
