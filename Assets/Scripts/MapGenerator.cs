@@ -448,7 +448,7 @@ public class MapGenerator
 							}
 							for (y = connectedRange.Start.Y; y <= connectedRange.End.Y; y++)
 							{
-								if (map[x, y] == 1 && map[x - 1, y] == 1)
+								if (map[x, y] == 1 && map[x - 1, y] == 1 && map[x - 2, y] == 1)
 								{
 									isLimited = false;
 									connectedRange = SearchRange(x - 2, y);
@@ -490,7 +490,7 @@ public class MapGenerator
 							}
 							for (y = connectedRange.Start.Y; y <= connectedRange.End.Y; y++)
 							{
-								if (map[x, y] == 1 && map[x + 1, y] == 1)
+								if (map[x, y] == 1 && map[x + 1, y] == 1 && map[x + 2, y] == 1)
 								{
 									isLimited = false;
 									connectedRange = SearchRange(x + 2, y);
@@ -532,7 +532,7 @@ public class MapGenerator
 							}
 							for (x = connectedRange.Start.X; x <= connectedRange.End.X; x++)
 							{
-								if (map[x, y] == 1 && map[x, y - 1] == 1)
+								if (map[x, y] == 1 && map[x, y - 1] == 1 && map[x, y - 2] == 1)
 								{
 									isLimited = false;
 									connectedRange = SearchRange(x, y - 2);
@@ -574,7 +574,7 @@ public class MapGenerator
 							}
 							for (x = connectedRange.Start.X; x <= connectedRange.End.X; x++)
 							{
-								if (map[x, y] == 1 && map[x, y + 1] == 1)
+								if (map[x, y] == 1 && map[x, y + 1] == 1 && map[x, y + 2] == 1)
 								{
 									isLimited = false;
 									connectedRange = SearchRange(x, y + 2);
