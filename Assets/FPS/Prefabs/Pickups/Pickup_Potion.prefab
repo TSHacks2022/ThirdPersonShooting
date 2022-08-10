@@ -79,7 +79,7 @@ MonoBehaviour:
   VerticalBobFrequency: 1
   BobbingAmount: 1
   RotatingSpeed: 360
-  PickupSfx: {fileID: 0}
+  PickupSfx: {fileID: 8300000, guid: 8dfdbc346713580429db9079ad1ff964, type: 3}
   PickupVfxPrefab: {fileID: 0}
   ItemName: Potion
 --- !u!1001 &8189752167721962275

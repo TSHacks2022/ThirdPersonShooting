@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
- 
+
 public class ItemManager : MonoBehaviour {
 
 
@@ -29,8 +29,9 @@ public class ItemManager : MonoBehaviour {
 		}
 	}
 
-    //　アイテムをどれだけ持っているかの数を返す
+    
 	public void PickItem(string key) {
+		
 		itemDictionary [key] += 1;
 		Debug.Log (key + " : " + GetNum(key));
 	}

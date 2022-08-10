@@ -79,7 +79,7 @@ MonoBehaviour:
   VerticalBobFrequency: 1
   BobbingAmount: 1
   RotatingSpeed: 360
-  PickupSfx: {fileID: 0}
+  PickupSfx: {fileID: 8300000, guid: 6f3e0904bbbace745bdef08cdbcdfec0, type: 3}
   PickupVfxPrefab: {fileID: 0}
   ItemName: HitPointPart
 --- !u!1001 &3841615884984996067
