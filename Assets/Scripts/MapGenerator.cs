@@ -354,7 +354,7 @@ public class MapGenerator
 		{
 			if (map[0, y] == 1)
 			{
-				for (int x = 0; x < mapSizeY; x++)
+				for (int x = 0; x < mapSizeX; x++)
 				{
 					if (map[x, y - 1] == 1 || map[x, y + 1] == 1)
 					{
@@ -377,233 +377,324 @@ public class MapGenerator
 		}
 	}
 
-	private Range SearchRange(int x, int y)
+	private int SearchRange(int x, int y)
 	{
-		Range returnRange = new Range();
+		int index = -1;
 
-		foreach (Range range in rangeList)
+		for (int i = 0; i < rangeList.Count; i++)
 		{
-			if (x >= range.Start.X && x <= range.End.X && y >= range.Start.Y && y <= range.End.Y)
+			if (x >= rangeList[i].Start.X && x <= rangeList[i].End.X && y >= rangeList[i].Start.Y && y <= rangeList[i].End.Y)
 			{
-				returnRange = range;
-				Debug.Log(x + ", " + y);
+				index = i;
 				break;
 			}
 		}
 
-		return returnRange;
+		return index;
 	}
 
 	private void CheckRangeConnection(ref int[,] map)
 	{
 		// 既に調べた区画のリスト
-		List<Range> checkedRange = new List<Range>();
+		List<int> checkedRangeList = new List<int>();
 		int maxTotalArea = 0;
-		int prevstartX = -1;
-		int prevstartY = -1;
-		int prevendX = -1;
-		int prevendY = -1;
-
+		List<int> prevRangeList = new List<int>();
+		int index = -1;
 		foreach (Range range in rangeList)
 		{
+			index++;
 			// 既に調べた区画なら飛ばす
-			if (checkedRange.Contains(range))
+			if (checkedRangeList.Contains(index))
 			{
 				continue;
 			}
 
-			checkedRange.Add(range);
+			checkedRangeList.Add(index);
 
+			List<int> nowRangeList = new List<int>();
 			Range connectedRange;
+			int connectedRangeIndex;
 			int x, y;
-			int startX = range.Start.X;
-			int startY = range.Start.Y;
-			int endX = range.End.X;
-			int endY = range.End.Y;
-			int area;
+			int nowX = -1, nowY = -1;
+			int nowDirection = -1;
+			int dx = 0, dy = 0;
+			int startX;
+			int startY;
 
-			// 一番左の辺
-			x = startX;
-			if (x > 0)
-			{
+			// スタート地点の区画をリストに入れる
+			nowRangeList.Add(index);
+
+			// スタート地点の区画の面積をareaの初期値にする
+			int area = (range.End.X - range.Start.X) * (range.End.Y - range.Start.Y);
+
+			/*
+			 * 壁伝い(分岐は必ず右を採用)に探索する
+			 * 地面でありかつどこかの壁に接している地点からスタート
+			 * 現在の向きnowDirection:0→上，1→右，2→下，3→左
+			*/
+			for (x = range.Start.X; x <= range.End.X; x++)
+            {
 				for (y = range.Start.Y; y <= range.End.Y; y++)
-				{
-					// 左の区画と繋がっている
-					if (map[x, y] == 1 && map[x - 1, y] == 1 && map[x - 2, y] == 1)
-					{
-						connectedRange = SearchRange(x - 2, y);
-						if (!checkedRange.Contains(connectedRange))
-						{
-							checkedRange.Add(connectedRange);
-						}
-						bool isLimited;
-						// 繋がっている区画群の左端まで調べる
-						do
-						{
-							isLimited = true;
-							x = connectedRange.Start.X;
-							if (x <= 0)
+                {
+					if (x > 0 && x < mapSizeX && y > 0 && y < mapSizeY)
+                    {
+						if (map[x, y] == 1)
+                        {
+							// 上が壁の場合
+							if (map[x, y - 1] == 0)
+                            {
+								nowX = x;
+								nowY = y;
+								nowDirection = 1;
+								break;
+                            }
+							// 右が壁の場合
+							if (map[x + 1, y] == 0)
 							{
+								nowX = x;
+								nowY = y;
+								nowDirection = 2;
 								break;
 							}
-							for (y = connectedRange.Start.Y; y <= connectedRange.End.Y; y++)
+							// 下が壁の場合
+							if (map[x, y + 1] == 0)
 							{
-								if (map[x, y] == 1 && map[x - 1, y] == 1 && map[x - 2, y] == 1)
-								{
-									isLimited = false;
-									connectedRange = SearchRange(x - 2, y);
-									if (!checkedRange.Contains(connectedRange))
-									{
-										checkedRange.Add(connectedRange);
-									}
-								}
+								nowX = x;
+								nowY = y;
+								nowDirection = 3;
+								break;
 							}
-						} while (!isLimited);
-						startX = connectedRange.Start.X;
-						break;
+							// 左が壁の場合
+							if (map[x, y - 1] == 0)
+							{
+								nowX = x;
+								nowY = y;
+								nowDirection = 0;
+								break;
+							}
+						}
+
 					}
+                }
+				if (nowX != -1 && nowY != -1)
+				{
+					break;
 				}
 			}
-			// 一番右の辺
-			x = endX;
-			if (x < mapSizeX)
-			{
-				for (y = range.Start.Y; y <= range.End.Y; y++)
-				{
-					// 右の区画と繋がっている
-					if (map[x, y] == 1 && map[x + 1, y] == 1 && map[x + 2, y] == 1)
-					{
-						connectedRange = SearchRange(x + 2, y);
-						if (!checkedRange.Contains(connectedRange))
-						{
-							checkedRange.Add(connectedRange);
-						}
-						bool isLimited;
-						// 繋がっている区画群の右端まで調べる
-						do
-						{
-							isLimited = true;
-							x = connectedRange.End.X;
-							if (x >= mapSizeX)
-							{
-								break;
-							}
-							for (y = connectedRange.Start.Y; y <= connectedRange.End.Y; y++)
-							{
-								if (map[x, y] == 1 && map[x + 1, y] == 1 && map[x + 2, y] == 1)
-								{
-									isLimited = false;
-									connectedRange = SearchRange(x + 2, y);
-									if (!checkedRange.Contains(connectedRange))
-									{
-										checkedRange.Add(connectedRange);
-									}
-								}
-							}
-						} while (!isLimited);
-						endX = connectedRange.End.X;
+
+			// 区画が全て壁だったらスキップする
+			if (nowX == -1 && nowY == -1)
+            {
+				continue;
+            }
+
+			// スタート地点を保存する
+			startX = nowX;
+			startY = nowY;
+			Debug.Log("test:(" + range.Start.X + "," + range.Start.Y + "),(" + range.End.X + "," + range.End.Y + ")");
+			Debug.Log(nowX + "," + nowY);
+
+			/*
+			 * 前に進めていく
+			 * どこかの区画(まだcheckedRangeに入っていない区画)に到達するごとに，その区画をcheckedRangeに入れ，その区画の面積をareaに足す
+			 * スタート地点に2回戻ってきたら終わり
+			*/
+			int startCount = -1;
+			int initialStep = 0;
+			int t = 0;
+			List<int> existX = new List<int>();
+			List<int> existY = new List<int>();
+			bool turnleft = false;
+			bool isExist = false;
+			while (t<20000)
+            {
+				t++;
+				Debug.Log("now:" + nowX + "," + nowY + "start:" + startX + "," + startY + "startcount:" + startCount + "index:" + index);
+				// 現在地がスタート地点か確認する
+				if (nowX == startX && nowY == startY)
+                {
+					startCount++;
+					if (startCount >= 2)
+                    {
+						Debug.Log("ok");
 						break;
+                    }
+                }
+				else
+                {
+					initialStep = 0;
+                }
+
+				// 現在の向きから移動差分を求める
+				if (nowDirection == 0)
+                {
+					dx = 0;
+					dy = -1;
+					if (turnleft == true)
+                    {
+						if (map[nowX - 1, nowY] == 1)
+                        {
+							nowDirection = 3;
+							turnleft = false;
+							existX.Clear();
+							existY.Clear();
+							continue;
+						}
+                    }
+                }
+				if (nowDirection == 1)
+				{
+					dx = 1;
+					dy = 0;
+					if (turnleft == true)
+					{
+						if (map[nowX, nowY - 1] == 1)
+						{
+							nowDirection = 0;
+							turnleft = false;
+							existX.Clear();
+							existY.Clear();
+							continue;
+						}
 					}
 				}
-			}
-			// 一番上の辺
-			y = startY;
-			if (y > 0)
-			{
-				for (x = range.Start.X; x <= range.End.X; x++)
+				if (nowDirection == 2)
 				{
-					// 上の区画と繋がっている
-					if (map[x, y] == 1 && map[x, y - 1] == 1 && map[x, y - 2] == 1)
+					dx = 0;
+					dy = 1;
+					if (map[nowX + 1, nowY] == 1)
 					{
-						connectedRange = SearchRange(x, y - 2);
-						if (!checkedRange.Contains(connectedRange))
-						{
-							checkedRange.Add(connectedRange);
-						}
-						bool isLimited;
-						// 繋がっている区画群の上端まで調べる
-						do
-						{
-							isLimited = true;
-							y = connectedRange.Start.Y;
-							if (y <= 0)
-							{
-								break;
-							}
-							for (x = connectedRange.Start.X; x <= connectedRange.End.X; x++)
-							{
-								if (map[x, y] == 1 && map[x, y - 1] == 1 && map[x, y - 2] == 1)
-								{
-									isLimited = false;
-									connectedRange = SearchRange(x, y - 2);
-									if (!checkedRange.Contains(connectedRange))
-									{
-										checkedRange.Add(connectedRange);
-									}
-								}
-							}
-						} while (!isLimited);
-						startY = connectedRange.Start.Y;
-						break;
+						nowDirection = 1;
+						turnleft = false;
+						existX.Clear();
+						existY.Clear();
+						continue;
 					}
 				}
-			}
-			// 一番下の辺
-			y = endY;
-			if (y > 0)
-			{
-				for (x = range.Start.X; x <= range.End.X; x++)
+				if (nowDirection == 3)
 				{
-					// 下の区画と繋がっている
-					if (map[x, y] == 1 && map[x, y + 1] == 1 && map[x, y + 2] == 1)
+					dx = -1;
+					dy = 0;
+					if (map[nowX, nowY + 1] == 1)
 					{
-						connectedRange = SearchRange(x, y + 2);
-						if (!checkedRange.Contains(connectedRange))
-						{
-							checkedRange.Add(connectedRange);
-						}
-						bool isLimited;
-						// 繋がっている区画群の下端まで調べる
-						do
-						{
-							isLimited = true;
-							y = connectedRange.End.Y;
-							if (y >= mapSizeY)
-							{
-								break;
-							}
-							for (x = connectedRange.Start.X; x <= connectedRange.End.X; x++)
-							{
-								if (map[x, y] == 1 && map[x, y + 1] == 1 && map[x, y + 2] == 1)
-								{
-									isLimited = false;
-									connectedRange = SearchRange(x, y + 2);
-									if (!checkedRange.Contains(connectedRange))
-									{
-										checkedRange.Add(connectedRange);
-									}
-								}
-							}
-						} while (!isLimited);
-						endY = connectedRange.End.Y;
+						nowDirection = 2;
+						turnleft = false;
+						existX.Clear();
+						existY.Clear();
+						continue;
+					}
+				}
+
+				// 前に壁がある場合は右を向く
+				if (map[nowX + dx, nowY + dy] == 0)
+                {
+					nowDirection++;
+					if (nowDirection >= 4)
+                    {
+						nowDirection = 0;
+                    }
+					// スタート地点で4回足踏みしたらstartCountを1にして次のループで終了する
+					if (nowX == startX && nowY == startY)
+                    {
+						startCount -= 1;
+						initialStep += 1;
+						if (initialStep >= 4)
+                        {
+							startCount = 0;
+                        }
+                    }
+					continue;
+                }
+
+				// 移動する
+				nowX = nowX + dx;
+				nowY = nowY + dy;
+
+				// 移動先の地点を保存する
+
+				for (int i = 0; i < existX.Count; i++)
+                {
+					if (existX[i] == nowX && existY[i] == nowY)
+                    {
+						isExist = true;
+						turnleft = true;
 						break;
+                    }
+                }
+				if (!isExist)
+				{
+					existX.Add(nowX);
+					existY.Add(nowY);
+				}
+
+				// 移動先の区画を確認する
+				connectedRangeIndex = SearchRange(nowX, nowY);
+				if (connectedRangeIndex != -1)
+				{
+					connectedRange = rangeList[connectedRangeIndex];
+					if (!checkedRangeList.Contains(connectedRangeIndex))
+					{
+						checkedRangeList.Add(connectedRangeIndex);
+						Debug.Log("Add:" + connectedRangeIndex);
+						nowRangeList.Add(connectedRangeIndex);
+						area += (connectedRange.End.X - connectedRange.Start.X) * (connectedRange.End.Y - connectedRange.Start.Y);
 					}
 				}
 			}
 
-			// 繋がっている区画群の面積を計算
-			area = (endX - startX) * (endY - startY);
-
+			/*
+			 * areaがmaxTotalAreaより小さいならnowRangeListにある区画と部屋(roomList参照)を全て埋め，prevRangeListをnowRangeListで上書きする
+			 * index > 0かつareaがmaxTotalAreaより大きいならprevRangeListにある区画と部屋(roomList参照)を全て埋める
+			*/
 			// 今の面積が前までの最大面積より大きければ更新
+			/*
 			if (area > maxTotalArea)
 			{
 				maxTotalArea = area;
 				// 前回まで最大だった区画群を埋める
-				if (prevstartX != -1)
+				if (index > 0)
+				{
+					foreach (int prevRangeIndex in prevRangeList)
+                    {
+						for (x = rangeList[prevRangeIndex].Start.X; x <= rangeList[prevRangeIndex].End.X; x++)
+						{
+							for (y = rangeList[prevRangeIndex].Start.Y; y <= rangeList[prevRangeIndex].End.Y; y++)
+							{
+								if (map[x, y] == 1)
+								{
+									map[x, y] = 0;
+								}
+							}
+						}
+						List<int> removeList = new List<int>();
+						for (int i = 0; i < roomList.Count; i++)
+						{
+							if (roomList[i].Start.X >= rangeList[prevRangeIndex].Start.X && roomList[i].End.X <= rangeList[prevRangeIndex].End.X && roomList[i].Start.Y >= rangeList[prevRangeIndex].Start.Y && roomList[i].End.Y <= rangeList[prevRangeIndex].End.Y)
+							{
+								removeList.Add(i);
+							}
+						}
+						foreach (int removeIndex in removeList)
+						{
+							roomList.RemoveAt(removeIndex);
+						}
+					}
+				}
+				prevRangeList.Clear();
+				foreach (int nowRangeIndex in nowRangeList)
                 {
-					for (x = prevstartX; x <= prevendX; x++)
+					prevRangeList.Add(nowRangeIndex);
+				}
+
+			}
+			// そうでなければ壁で埋める
+			else
+			{
+				foreach (int nowRangeIndex in nowRangeList)
+				{
+					for (x = rangeList[nowRangeIndex].Start.X; x <= rangeList[nowRangeIndex].End.X; x++)
 					{
-						for (y = prevstartY; y <= prevendY; y++)
+						for (y = rangeList[nowRangeIndex].Start.Y; y <= rangeList[nowRangeIndex].End.Y; y++)
 						{
 							if (map[x, y] == 1)
 							{
@@ -611,26 +702,21 @@ public class MapGenerator
 							}
 						}
 					}
-				}
-				prevstartX = startX;
-				prevstartY = startY;
-				prevendX = endX;
-				prevendY = endY;
-			}
-			// そうでなければ壁で埋める
-			else
-			{
-				for (x = startX; x <= endX; x++)
-				{
-					for (y = startY; y <= endY; y++)
+					List<int> removeList = new List<int>();
+					for (int i = 0; i < roomList.Count; i++)
 					{
-						if (map[x, y] == 1)
+						if (roomList[i].Start.X >= rangeList[nowRangeIndex].Start.X && roomList[i].End.X <= rangeList[nowRangeIndex].End.X && roomList[i].Start.Y >= rangeList[nowRangeIndex].Start.Y && roomList[i].End.Y <= rangeList[nowRangeIndex].End.Y)
 						{
-							map[x, y] = 0;
+							removeList.Add(i);
 						}
+					}
+					foreach (int removeIndex in removeList)
+					{
+						roomList.RemoveAt(removeIndex);
 					}
 				}
 			}
+			*/
 		}
 	}
 
