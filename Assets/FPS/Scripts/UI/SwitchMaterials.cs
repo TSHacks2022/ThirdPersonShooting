@@ -26,6 +26,19 @@ public class SwitchMaterials : MonoBehaviour
     public TextMeshProUGUI ACC;
     public TextMeshProUGUI FR;
     public GameObject Done;
+    public TextMeshProUGUI AATK;
+    public TextMeshProUGUI AACC;
+    public TextMeshProUGUI AFR;
+    public GameObject ResultPanel;
+    public TextMeshProUGUI BATK;
+    public TextMeshProUGUI BACC;
+    public TextMeshProUGUI BFR;
+    public TextMeshProUGUI RATK;
+    public TextMeshProUGUI RACC;
+    public TextMeshProUGUI RFR;
+    public TextMeshProUGUI UCATK;
+    public TextMeshProUGUI UCACC;
+    public TextMeshProUGUI UCFR;
     
     //public GameObject 
     public  int M1stack = 10,M2stack = 10,M3stack = 10;
@@ -40,9 +53,13 @@ public class SwitchMaterials : MonoBehaviour
         if(M1stack != 0) M1.SetActive(true);
         if(M2stack != 0) M2.SetActive(true);
         if(M3stack != 0) M3.SetActive(true);
-        ATK.text = "ATK: "+attack.ToString()+"-> "+attack.ToString();
-        ACC.text = "ACC: "+accuracy.ToString()+"-> "+accuracy.ToString();
-        FR.text = "FR:  "+firerate.ToString()+"-> "+firerate.ToString();
+        ATK.text = "ATK: "+attack.ToString()+"-> ";
+        ACC.text = "ACC: "+accuracy.ToString()+"-> ";
+        FR.text = "FR:  "+firerate.ToString()+"-> ";
+        AATK.text = attack.ToString();
+        AACC.text = accuracy.ToString();
+        AFR.text = firerate.ToString();
+
     }
 
     public void SwitchM1(){
@@ -65,7 +82,8 @@ public class SwitchMaterials : MonoBehaviour
         }
         M1text.text = "M1   x" + M1stack.ToString();
         UM1text.text = "M1   x" + UM1stack.ToString();
-        ATK.text = "ATK: "+attack.ToString()+"-> "+(attack+M1plus*UM1stack).ToString();
+        ATK.text = "ATK: "+attack.ToString()+"-> ";
+        AATK.text = (attack+M1plus*UM1stack).ToString();
     }
 
     public void SwitchM2(){
@@ -88,7 +106,8 @@ public class SwitchMaterials : MonoBehaviour
         }
         M2text.text = "M2   x" + M2stack.ToString();
         UM2text.text = "M2   x" + UM2stack.ToString();
-        ACC.text = "ACC: "+accuracy.ToString()+"-> "+(accuracy+M2plus*UM2stack).ToString();
+        ACC.text = "ACC: "+accuracy.ToString()+"-> ";
+        AACC.text = (accuracy+M2plus*UM2stack).ToString();
     }
 
     public void SwitchM3(){
@@ -111,18 +130,34 @@ public class SwitchMaterials : MonoBehaviour
         }
         M3text.text = "M3   x" + M3stack.ToString();
         UM3text.text = "M3   x" + UM3stack.ToString();
-        FR.text = "FR:  "+firerate.ToString()+"-> "+(firerate+M3plus*UM3stack).ToString();
+        FR.text = "FR:  "+firerate.ToString()+"-> ";
+        AFR.text = (firerate+M3plus*UM3stack).ToString();
     }
     
     public void EnhancementDone(){
+        if(UM1stack+UM2stack+UM3stack > 0){
+            result();
+        }
         attack += M1plus*UM1stack;
         accuracy += M2plus*UM2stack;
         firerate += M3plus*UM3stack;
         UM1stack = 0; UM2stack = 0; UM3stack = 0;
         UM1.SetActive(false); UM2.SetActive(false); UM3.SetActive(false);
-        ATK.text = "ATK: "+attack.ToString()+"-> "+attack.ToString();
-        ACC.text = "ACC: "+accuracy.ToString()+"-> "+accuracy.ToString();
-        FR.text = "FR:  "+firerate.ToString()+"-> "+firerate.ToString();
+        ATK.text = "ATK: "+attack.ToString()+"-> ";
+        ACC.text = "ACC: "+accuracy.ToString()+"-> ";
+        FR.text = "FR:  "+firerate.ToString()+"-> ";
+        AATK.text = attack.ToString();
+        AACC.text = accuracy.ToString();
+        AFR.text = firerate.ToString();
     }
     
+    public void result(){
+        ResultPanel.SetActive(true);
+        BATK.text = "ATK: "+attack.ToString()+"-> ";
+        BACC.text = "ACC: "+accuracy.ToString()+"-> ";
+        BFR.text = "FR:  "+firerate.ToString()+"-> ";
+        RATK.text = (attack+M1plus*UM1stack).ToString();
+        RACC.text = (accuracy+M2plus*UM2stack).ToString();
+        RFR.text = (firerate+M3plus*UM3stack).ToString();
+    }
 }
