@@ -428,8 +428,8 @@ public class MapGenerator
 			int area = (range.End.X - range.Start.X) * (range.End.Y - range.Start.Y);
 
 			/*
-			 * 壁伝い(分岐は必ず右を採用)に探索する
-			 * 地面でありかつどこかの壁に接している地点からスタート
+			 * 左手法で探索する
+			 * 地面でありかつ左側が壁に接している地点からスタート
 			 * 現在の向きnowDirection:0→上，1→右，2→下，3→左
 			*/
 			for (x = range.Start.X; x <= range.End.X; x++)
@@ -491,8 +491,6 @@ public class MapGenerator
 			// スタート地点を保存する
 			startX = nowX;
 			startY = nowY;
-			Debug.Log("test:(" + range.Start.X + "," + range.Start.Y + "),(" + range.End.X + "," + range.End.Y + ")");
-			Debug.Log(nowX + "," + nowY);
 
 			/*
 			 * 前に進めていく
@@ -501,22 +499,14 @@ public class MapGenerator
 			*/
 			int startCount = -1;
 			int initialStep = 0;
-			int t = 0;
-			List<int> existX = new List<int>();
-			List<int> existY = new List<int>();
-			bool turnleft = false;
-			bool isExist = false;
-			while (t<20000)
+			while (true)
             {
-				t++;
-				Debug.Log("now:" + nowX + "," + nowY + "start:" + startX + "," + startY + "startcount:" + startCount + "index:" + index);
 				// 現在地がスタート地点か確認する
 				if (nowX == startX && nowY == startY)
                 {
 					startCount++;
 					if (startCount >= 2)
                     {
-						Debug.Log("ok");
 						break;
                     }
                 }
@@ -530,59 +520,22 @@ public class MapGenerator
                 {
 					dx = 0;
 					dy = -1;
-					if (turnleft == true)
-                    {
-						if (map[nowX - 1, nowY] == 1)
-                        {
-							nowDirection = 3;
-							turnleft = false;
-							existX.Clear();
-							existY.Clear();
-							continue;
-						}
-                    }
                 }
 				if (nowDirection == 1)
 				{
 					dx = 1;
 					dy = 0;
-					if (turnleft == true)
-					{
-						if (map[nowX, nowY - 1] == 1)
-						{
-							nowDirection = 0;
-							turnleft = false;
-							existX.Clear();
-							existY.Clear();
-							continue;
-						}
-					}
+
 				}
 				if (nowDirection == 2)
 				{
 					dx = 0;
 					dy = 1;
-					if (map[nowX + 1, nowY] == 1)
-					{
-						nowDirection = 1;
-						turnleft = false;
-						existX.Clear();
-						existY.Clear();
-						continue;
-					}
 				}
 				if (nowDirection == 3)
 				{
 					dx = -1;
 					dy = 0;
-					if (map[nowX, nowY + 1] == 1)
-					{
-						nowDirection = 2;
-						turnleft = false;
-						existX.Clear();
-						existY.Clear();
-						continue;
-					}
 				}
 
 				// 前に壁がある場合は右を向く
@@ -600,7 +553,7 @@ public class MapGenerator
 						initialStep += 1;
 						if (initialStep >= 4)
                         {
-							startCount = 0;
+							startCount = 1;
                         }
                     }
 					continue;
@@ -610,21 +563,23 @@ public class MapGenerator
 				nowX = nowX + dx;
 				nowY = nowY + dy;
 
-				// 移動先の地点を保存する
-
-				for (int i = 0; i < existX.Count; i++)
-                {
-					if (existX[i] == nowX && existY[i] == nowY)
-                    {
-						isExist = true;
-						turnleft = true;
-						break;
-                    }
-                }
-				if (!isExist)
+				// 左が空いている場合は左を向く
+				if (nowDirection == 0 && map[nowX - 1, nowY] == 1)
 				{
-					existX.Add(nowX);
-					existY.Add(nowY);
+					nowDirection = 3;
+				}
+				else if (nowDirection == 1 && map[nowX, nowY - 1] == 1)
+				{
+					nowDirection = 0;
+
+				}
+				else if (nowDirection == 2 && map[nowX + 1, nowY] == 1)
+				{
+					nowDirection = 1;
+				}
+				else if (nowDirection == 3 && map[nowX, nowY + 1] == 1)
+				{
+					nowDirection = 2;
 				}
 
 				// 移動先の区画を確認する
@@ -635,7 +590,6 @@ public class MapGenerator
 					if (!checkedRangeList.Contains(connectedRangeIndex))
 					{
 						checkedRangeList.Add(connectedRangeIndex);
-						Debug.Log("Add:" + connectedRangeIndex);
 						nowRangeList.Add(connectedRangeIndex);
 						area += (connectedRange.End.X - connectedRange.Start.X) * (connectedRange.End.Y - connectedRange.Start.Y);
 					}
@@ -646,8 +600,6 @@ public class MapGenerator
 			 * areaがmaxTotalAreaより小さいならnowRangeListにある区画と部屋(roomList参照)を全て埋め，prevRangeListをnowRangeListで上書きする
 			 * index > 0かつareaがmaxTotalAreaより大きいならprevRangeListにある区画と部屋(roomList参照)を全て埋める
 			*/
-			// 今の面積が前までの最大面積より大きければ更新
-			/*
 			if (area > maxTotalArea)
 			{
 				maxTotalArea = area;
@@ -716,7 +668,6 @@ public class MapGenerator
 					}
 				}
 			}
-			*/
 		}
 	}
 
