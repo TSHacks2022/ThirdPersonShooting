@@ -22,6 +22,7 @@ namespace Unity.FPS.Gameplay
         {
             //text変更 
             ItemManager.instance.PickItem(ItemName);
+            //Itemnameに応じてItemstaticを更新
             PlayPickupFeedback();
             Destroy(gameObject);
 

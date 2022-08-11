@@ -24,7 +24,7 @@ namespace Unity.FPS.UI
 
             //　左のシフトキーをキーコードで判断
             if(Input.GetKey(KeyCode.LeftShift)) {
-                //Debug.Log("LeftShiftKeyCode");
+                Debug.Log(ItemStaticData.potion);
                 inventoryPanel.SetActive(true);
             }else{
                 inventoryPanel.SetActive(false);
