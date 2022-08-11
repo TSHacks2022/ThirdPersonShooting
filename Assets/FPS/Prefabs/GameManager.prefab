@@ -241,16 +241,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1315839542190839943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e1fea5cb3ddbc249bd0181e6766db68, type: 3}
+  m_Script: {fileID: 11500000, guid: cf6b71291a2db9941b75643172937e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   EndSceneLoadDelay: 3
-  EndGameFadeCanvasGroup: {fileID: 6089522275397732777}
+  EndGameFadeCanvasGroup: {fileID: 0}
   WinSceneName: WinScene
   DelayBeforeFadeToBlack: 4
-  WinGameMessage: All objectives completed
+  WinGameMessage: 
   DelayBeforeWinMessage: 2
-  VictorySound: {fileID: 8300000, guid: a533219934975884e81c1add37af9930, type: 3}
+  VictorySound: {fileID: 0}
   LoseSceneName: LoseScene
 --- !u!114 &1315839542190839938
 MonoBehaviour:
