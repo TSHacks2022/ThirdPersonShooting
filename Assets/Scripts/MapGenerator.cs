@@ -503,8 +503,10 @@ public class MapGenerator
 			List<int> nowPassPositionX = new List<int>();
 			List<int> nowPassPositionY = new List<int>();
 			bool isPassed;
-			while (true)
+			int t = 0;
+			while (t <= mapSizeX * mapSizeY * 4)
             {
+				t++;
 				// 現在地がスタート地点か確認する
 				if (nowX == startX && nowY == startY)
                 {
@@ -705,6 +707,13 @@ public class MapGenerator
 					{
 						map[nowPassPositionX[i], nowPassPositionY[i]] = 0;
 					}
+				}
+			}
+			foreach (Position prevPassPosition in prevPassPositionList)
+			{
+				if (map[prevPassPosition.X, prevPassPosition.Y] == 0)
+				{
+					map[prevPassPosition.X, prevPassPosition.Y] = 1;
 				}
 			}
 		}
