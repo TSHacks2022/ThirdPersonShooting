@@ -19,7 +19,7 @@ public class MapGenerator
 	private List<Range> roomPassList = new List<Range>();
 
 
-	public int[,] GenerateMap(int mapSizeX, int mapSizeY, int maxRoom, int enemyNum)
+	public int[,] GenerateMap(int mapSizeX, int mapSizeY, int maxRoom, int enemyNum, int itemNum)
 	{
 		this.mapSizeX = mapSizeX;
 		this.mapSizeY = mapSizeY;
@@ -65,7 +65,7 @@ public class MapGenerator
 
 		CheckRangeConnection(ref map);
 
-		PlaceObjects(ref map, enemyNum);
+		PlaceObjects(ref map, enemyNum, itemNum);
 
 		return map;
 	}
@@ -634,11 +634,12 @@ public class MapGenerator
 		}
 	}
 
-	private void PlaceObjects(ref int[,] map, int enemyNum)
+	private void PlaceObjects(ref int[,] map, int enemyNum, int itemNum)
     {
 		PlaceStair(ref map);
 		PlacePlayer(ref map);
 		PlaceEnemy(ref map, enemyNum);
+		PlaceItem(ref map, itemNum);
     }
 
 	private void PlaceStair(ref int[,] map)
@@ -680,6 +681,27 @@ public class MapGenerator
 			int y = Random.Range(enemyRoom.Start.Y, enemyRoom.End.Y + 1);
 
 			map[x, y] = 4;
+		}
+	}
+
+	private void PlaceItem(ref int[,] map, int itemNum)
+    {
+        int itemRoomIdx;
+
+		itemNum = Random.Range(0, itemNum);
+
+		for (int i = 0; i < itemNum; i++)
+		{
+			do
+			{
+				itemRoomIdx = Random.Range(0, roomList.Count);
+			}
+			while (itemRoomIdx == stairRoomIdx || itemRoomIdx == playerRoomIdx);
+			Range itemRoom = roomList[itemRoomIdx];
+			int x = Random.Range(itemRoom.Start.X, itemRoom.End.X + 1);
+			int y = Random.Range(itemRoom.Start.Y, itemRoom.End.Y + 1);
+
+			map[x, y] = 5;
 		}
 	}
 }
