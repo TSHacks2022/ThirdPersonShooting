@@ -66,7 +66,6 @@ namespace Unity.FPS.Gameplay
         {
             PlayPickupFeedback();
         }
-
         public void PlayPickupFeedback()
         {
             if (m_HasPlayedFeedback)
@@ -81,7 +80,6 @@ namespace Unity.FPS.Gameplay
             {
                 var pickupVfxInstance = Instantiate(PickupVfxPrefab, transform.position, Quaternion.identity);
             }
-
             m_HasPlayedFeedback = true;
         }
     }
