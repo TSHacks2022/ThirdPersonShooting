@@ -11,7 +11,7 @@ public class StairCollision : MonoBehaviour
 
         if(objName == "Stairs") 
         {
-            SceneManager.LoadScene("Dungeon");
+            SceneManager.LoadScene("MainScene");
         }
     }
 }
