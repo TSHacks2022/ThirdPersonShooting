@@ -31,8 +31,12 @@ public class ItemManager : MonoBehaviour {
 
     
 	public void PickItem(string key) {
-		
 		itemDictionary [key] += 1;
+		Debug.Log (key + " : " + GetNum(key));
+	}
+
+	public void UsedItem(string key) {
+		itemDictionary [key] -= 1;
 		Debug.Log (key + " : " + GetNum(key));
 	}
 

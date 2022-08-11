@@ -21,6 +21,7 @@ namespace Unity.FPS.UI
         void Update()
         {
             inventoryText.text = ItemManager.instance.GetInventory();
+
             //　左のシフトキーをキーコードで判断
             if(Input.GetKey(KeyCode.LeftShift)) {
                 //Debug.Log("LeftShiftKeyCode");
