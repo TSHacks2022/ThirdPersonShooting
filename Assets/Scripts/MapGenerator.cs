@@ -399,6 +399,7 @@ public class MapGenerator
 		List<int> checkedRangeList = new List<int>();
 		int maxTotalArea = 0;
 		List<int> prevRangeList = new List<int>();
+		List<Position> prevPassPositionList = new List<Position>();
 		int index = -1;
 		foreach (Range range in rangeList)
 		{
@@ -499,6 +500,9 @@ public class MapGenerator
 			*/
 			int startCount = -1;
 			int initialStep = 0;
+			List<int> nowPassPositionX = new List<int>();
+			List<int> nowPassPositionY = new List<int>();
+			bool isPassed;
 			while (true)
             {
 				// 現在地がスタート地点か確認する
@@ -558,6 +562,21 @@ public class MapGenerator
                     }
 					continue;
                 }
+
+				// 現在地点を登録
+				isPassed = false;
+				for (int i = 0; i < nowPassPositionX.Count; i++)
+                {
+					if (nowPassPositionX[i] == nowX && nowPassPositionX[i] == nowY)
+                    {
+						isPassed = true;
+					}
+                }
+				if (isPassed == false)
+                {
+					nowPassPositionX.Add(nowX);
+					nowPassPositionY.Add(nowY);
+				}
 
 				// 移動する
 				nowX = nowX + dx;
@@ -631,12 +650,25 @@ public class MapGenerator
 							roomList.RemoveAt(removeIndex);
 						}
 					}
+					foreach (Position prevPassPosition in prevPassPositionList)
+                    {
+						if (map[prevPassPosition.X, prevPassPosition.Y] == 1)
+                        {
+							map[prevPassPosition.X, prevPassPosition.Y] = 0;
+
+						}
+                    }
 				}
 				prevRangeList.Clear();
 				foreach (int nowRangeIndex in nowRangeList)
                 {
 					prevRangeList.Add(nowRangeIndex);
 				}
+				prevPassPositionList.Clear();
+				for (int i = 0; i < nowPassPositionX.Count; i++)
+                {
+					prevPassPositionList.Add(new Position(nowPassPositionX[i], nowPassPositionY[i]));
+                }
 
 			}
 			// そうでなければ壁で埋める
@@ -665,6 +697,13 @@ public class MapGenerator
 					foreach (int removeIndex in removeList)
 					{
 						roomList.RemoveAt(removeIndex);
+					}
+				}
+				for (int i = 0; i < nowPassPositionX.Count; i++)
+				{
+					if (map[nowPassPositionX[i], nowPassPositionY[i]] == 1)
+					{
+						map[nowPassPositionX[i], nowPassPositionY[i]] = 0;
 					}
 				}
 			}
