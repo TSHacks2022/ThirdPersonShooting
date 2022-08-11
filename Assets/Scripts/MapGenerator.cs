@@ -514,6 +514,19 @@ public class MapGenerator
 					startCount++;
 					if (startCount >= 2)
                     {
+						isPassed = false;
+						for (int i = 0; i < nowPassPositionX.Count; i++)
+						{
+							if (nowPassPositionX[i] == nowX && nowPassPositionX[i] == nowY)
+							{
+								isPassed = true;
+							}
+						}
+						if (isPassed == false)
+						{
+							nowPassPositionX.Add(nowX);
+							nowPassPositionY.Add(nowY);
+						}
 						break;
                     }
                 }
