@@ -400,6 +400,7 @@ public class MapGenerator
 		int maxTotalArea = 0;
 		List<int> prevRangeList = new List<int>();
 		List<Position> prevPassPositionList = new List<Position>();
+		bool isUsedPosition;
 		int index = -1;
 		foreach (Range range in rangeList)
 		{
@@ -656,8 +657,19 @@ public class MapGenerator
                     {
 						if (map[prevPassPosition.X, prevPassPosition.Y] == 1)
                         {
-							map[prevPassPosition.X, prevPassPosition.Y] = 0;
-
+							isUsedPosition = false;
+							for (int i = 0; i < nowPassPositionX.Count; i++)
+							{
+								if (nowPassPositionX[i] == prevPassPosition.X && nowPassPositionY[i] == prevPassPosition.Y)
+                                {
+									isUsedPosition = true;
+									break;
+								}
+							}
+							if (isUsedPosition == false)
+                            {
+								map[prevPassPosition.X, prevPassPosition.Y] = 0;
+							}
 						}
                     }
 				}
@@ -705,15 +717,20 @@ public class MapGenerator
 				{
 					if (map[nowPassPositionX[i], nowPassPositionY[i]] == 1)
 					{
-						map[nowPassPositionX[i], nowPassPositionY[i]] = 0;
+						isUsedPosition = false;
+						foreach (Position prevPassPosition in prevPassPositionList)
+						{
+							if (prevPassPosition.X == nowPassPositionX[i] && prevPassPosition.Y == nowPassPositionY[i])
+							{
+								isUsedPosition = true;
+								break;
+							}
+						}
+						if (isUsedPosition == false)
+						{
+							map[nowPassPositionX[i], nowPassPositionY[i]] = 0;
+						}
 					}
-				}
-			}
-			foreach (Position prevPassPosition in prevPassPositionList)
-			{
-				if (map[prevPassPosition.X, prevPassPosition.Y] == 0)
-				{
-					map[prevPassPosition.X, prevPassPosition.Y] = 1;
 				}
 			}
 		}
