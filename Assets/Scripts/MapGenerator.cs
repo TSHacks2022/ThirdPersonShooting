@@ -648,9 +648,9 @@ public class MapGenerator
 								removeList.Add(i);
 							}
 						}
-						foreach (int removeIndex in removeList)
-						{
-							roomList.RemoveAt(removeIndex);
+						for (int i = removeList.Count - 1; i >= 0; i--)
+                        {
+							roomList.RemoveAt(removeList[i]);
 						}
 					}
 					foreach (Position prevPassPosition in prevPassPositionList)
@@ -708,9 +708,9 @@ public class MapGenerator
 							removeList.Add(i);
 						}
 					}
-					foreach (int removeIndex in removeList)
+					for (int i = removeList.Count - 1; i >= 0; i--)
 					{
-						roomList.RemoveAt(removeIndex);
+						roomList.RemoveAt(removeList[i]);
 					}
 				}
 				for (int i = 0; i < nowPassPositionX.Count; i++)
