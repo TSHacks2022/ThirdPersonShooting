@@ -98,7 +98,7 @@ MonoBehaviour:
   RotatingSpeed: 360
   PickupSfx: {fileID: 8300000, guid: 6f3e0904bbbace745bdef08cdbcdfec0, type: 3}
   PickupVfxPrefab: {fileID: 0}
-  ItemName: Potion
+  ItemName: HitPointPart
 --- !u!1001 &6552951341475767257
 PrefabInstance:
   m_ObjectHideFlags: 0

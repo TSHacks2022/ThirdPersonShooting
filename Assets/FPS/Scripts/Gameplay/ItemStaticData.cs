@@ -6,11 +6,11 @@ public class ItemStaticData : ScriptableObject
 {
     public static int potion = 0;
 　　public static Dictionary<string, int> itemDictionary= new Dictionary<string, int>(){
-    {"Potion", 0},
-    {"HitPointPart", 100},
-    {"AttackPart", 400},
-    {"SpeedPart", 300},
-    {"RapidPart", 100},
+    {"Potion", 3},
+    {"HitPointPart", 0},
+    {"AttackPart", 0},
+    {"SpeedPart", 0},
+    {"RapidPart", 0},
   };
   
 }
