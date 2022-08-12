@@ -206,23 +206,23 @@ namespace Unity.FPS.AI
             int rand = Random.Range(0, LootItemNum);
             if (rand == 0)
             {
-                loot = "Prefabs/Pickup_Attack";
+                loot = "Prefabs/Pickup_Potion";
             }
             else if (rand == 1)
             {
-                loot = "Prefabs/Pickup_AttackPart";
+                loot = "Prefabs/Pickup_HitPointPart";
             }
             else if (rand == 2)
             {
-                loot = "Prefabs/Pickup_Potion";
+                loot = "Prefabs/Pickup_AttackPart";
             }
             else if (rand == 3)
             {
-                loot = "Prefabs/Pickup_Rapid";
+                loot = "Prefabs/Pickup_SpeedPart";
             }
             else if (rand == 4)
             {
-                loot = "Prefabs/Pickup_SpeedPart";
+                loot = "Prefabs/Pickup_RapidPart";
             }
 
             LootPrefab = Resources.Load(loot) as GameObject;
