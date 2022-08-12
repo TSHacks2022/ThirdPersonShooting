@@ -742,6 +742,7 @@ public class MapGenerator
 		PlacePlayer(ref map);
 		PlaceEnemy(ref map, enemyNum);
 		PlaceItem(ref map, itemNum);
+		PlaceBoss(ref map);
     }
 
 	private void PlaceStair(ref int[,] map)
@@ -801,8 +802,10 @@ public class MapGenerator
 	private void PlaceItem(ref int[,] map, int itemNum)
     {
         int itemRoomIdx;
+		int x, y;
 
 		itemNum = Random.Range(0, itemNum);
+
 
 		for (int i = 0; i < itemNum; i++)
 		{
@@ -819,11 +822,42 @@ public class MapGenerator
 				itemRoomIdx = 0;
 			}
 
-			Range itemRoom = roomList[itemRoomIdx];
-			int x = Random.Range(itemRoom.Start.X, itemRoom.End.X + 1);
-			int y = Random.Range(itemRoom.Start.Y, itemRoom.End.Y + 1);
+			do
+			{
+				Range itemRoom = roomList[itemRoomIdx];
+				x = Random.Range(itemRoom.Start.X, itemRoom.End.X + 1);
+				y = Random.Range(itemRoom.Start.Y, itemRoom.End.Y + 1);
+			} while (map[x, y] != 1);
 
 			map[x, y] = 5;
 		}
+	}
+
+	private void PlaceBoss(ref int[,] map)
+	{
+		int bossRoomIdx;
+		int x, y;
+
+		Debug.Log(StaticData.floor);
+
+		if (StaticData.floor == 15)
+        {
+			bossRoomIdx = stairRoomIdx;
+			
+		}
+        else
+        {
+			return;
+        }
+
+			Range bossRoom = roomList[bossRoomIdx];
+
+		do
+		{
+			x = Random.Range(bossRoom.Start.X, bossRoom.End.X + 1);
+			y = Random.Range(bossRoom.Start.Y, bossRoom.End.Y + 1);
+		} while (map[x, y] != 1);
+
+		map[x, y] = 6;
 	}
 }

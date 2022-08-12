@@ -18,10 +18,12 @@ public class SceneInitializer : MonoBehaviour
 	private GameObject floorPrefab;
 	private GameObject wallPrefab;
 	private GameObject enemyPrefab;
+	private GameObject bossPrefab;
 
 	public int enemyNum = 3;
 
 	private string enemyObject;
+	private string bossObject;
 
 	private int[,] map;
 
@@ -30,6 +32,7 @@ public class SceneInitializer : MonoBehaviour
 	{
 		GenerateMap();
 		EnemySelect();
+		BossSelect();
 		InstantiateMap();
 		EnemyUpgrade();
 	}
@@ -43,6 +46,7 @@ public class SceneInitializer : MonoBehaviour
     {
 		wallPrefab = Resources.Load("Prefabs/Wall") as GameObject;
 		enemyPrefab = Resources.Load(enemyObject) as GameObject;
+		bossPrefab = Resources.Load(bossObject) as GameObject;
 
 		var floorList = new List<Vector3>();
 		var wallList = new List<Vector3>();
@@ -67,6 +71,10 @@ public class SceneInitializer : MonoBehaviour
 				else if (map[x, y] == 5)
 				{
 					Instantiate(ItemSelect(), new Vector3(ONE_TILE_SIZE * x, 0.1f, ONE_TILE_SIZE * y), new Quaternion());
+				}
+				else if (map[x, y] == 6)
+				{
+					Instantiate(bossPrefab, new Vector3(ONE_TILE_SIZE * x, 0, ONE_TILE_SIZE * y), new Quaternion());
 				}
 				else if (map[x, y] != 1)
 				{
@@ -95,11 +103,11 @@ public class SceneInitializer : MonoBehaviour
 
 	private void EnemySelect()
     {
-		if(StaticData.floor / 5 < 1)
+		if(StaticData.floor / 5 + 1 < 1)
         {
 			enemyObject = "Prefabs/Enemy_HoverBot_Easy";
 		}
-		else if(StaticData.floor / 5 < 2)
+		else if(StaticData.floor / 5 + 1 < 2)
         {
 			enemyObject = "Prefabs/Enemy_HoverBot_Normal";
 
@@ -107,6 +115,22 @@ public class SceneInitializer : MonoBehaviour
 		else
 		{
 			enemyObject = "Prefabs/Enemy_HoverBot_Hard";
+		}
+	}
+
+	private void BossSelect()
+	{
+		if (StaticData.floor / 5 < 1)
+		{
+			bossObject = "Prefabs/Enemy_Turret";
+		}
+		else if (StaticData.floor / 5 < 2)
+		{
+			bossObject = "Prefabs/Enemy_Turret";
+		}
+		else
+		{
+			bossObject = "Prefabs/Enemy_Turret";
 		}
 	}
 
