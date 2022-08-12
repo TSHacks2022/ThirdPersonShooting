@@ -100,7 +100,7 @@ public class SwitchMaterials : MonoBehaviour
             }
         }
         M1text.text = "Attack   x" + M1stack.ToString();
-        UM1text.text = "Atteack   x" + UM1stack.ToString();
+        UM1text.text = "Attack   x" + UM1stack.ToString();
         ATK.text = "ATK: +"+attack.ToString()+" -> ";
         AATK.text = (attack+UM1stack).ToString();
     }
