@@ -746,7 +746,7 @@ public class MapGenerator
 
 	private void PlaceStair(ref int[,] map)
     {
-		stairRoomIdx = Random.Range(0, roomList.Count);
+		stairRoomIdx = 0;
 		Range stairRoom = roomList[stairRoomIdx];
 		int x = Random.Range(stairRoom.Start.X, stairRoom.End.X + 1);
 		int y = Random.Range(stairRoom.Start.Y, stairRoom.End.Y + 1);
@@ -756,11 +756,15 @@ public class MapGenerator
 
 	private void PlacePlayer(ref int[,] map)
 	{
-		do
-		{
-			playerRoomIdx = Random.Range(0, roomList.Count);
+		if(roomList.Count > 1)
+        {
+			playerRoomIdx = 1;
 		}
-		while (playerRoomIdx == stairRoomIdx);
+		else
+        {
+			playerRoomIdx = 0;
+		}
+		
 		Range playerRoom = roomList[playerRoomIdx];
 		int x = Random.Range(playerRoom.Start.X, playerRoom.End.X + 1);
 		int y = Random.Range(playerRoom.Start.Y, playerRoom.End.Y + 1);
@@ -773,11 +777,19 @@ public class MapGenerator
 		int enemyRoomIdx;
 		for (int i = 0; i < enemyNum; i++)
         {
-			do
+			if (roomList.Count > 2)
 			{
-				enemyRoomIdx = Random.Range(0, roomList.Count);
-		}
-			while (enemyRoomIdx == stairRoomIdx || enemyRoomIdx == playerRoomIdx);
+				do
+				{
+					enemyRoomIdx = Random.Range(0, roomList.Count);
+				}
+				while (enemyRoomIdx == stairRoomIdx || enemyRoomIdx == playerRoomIdx);
+			}
+			else
+			{
+				enemyRoomIdx = 0;
+			}
+
 			Range enemyRoom = roomList[enemyRoomIdx];
 			int x = Random.Range(enemyRoom.Start.X, enemyRoom.End.X + 1);
 			int y = Random.Range(enemyRoom.Start.Y, enemyRoom.End.Y + 1);
@@ -794,11 +806,19 @@ public class MapGenerator
 
 		for (int i = 0; i < itemNum; i++)
 		{
-			do
+			if (roomList.Count > 2)
 			{
-				itemRoomIdx = Random.Range(0, roomList.Count);
+				do
+				{
+					itemRoomIdx = Random.Range(0, roomList.Count);
+				}
+				while (itemRoomIdx == stairRoomIdx || itemRoomIdx == playerRoomIdx);
 			}
-			while (itemRoomIdx == stairRoomIdx || itemRoomIdx == playerRoomIdx);
+			else
+			{
+				itemRoomIdx = 0;
+			}
+
 			Range itemRoom = roomList[itemRoomIdx];
 			int x = Random.Range(itemRoom.Start.X, itemRoom.End.X + 1);
 			int y = Random.Range(itemRoom.Start.Y, itemRoom.End.Y + 1);

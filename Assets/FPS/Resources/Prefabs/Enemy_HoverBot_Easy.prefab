@@ -473,8 +473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DetectionSourcePoint: {fileID: 6571005840976436832}
-  DetectionRange: 20
-  AttackRange: 10
+  DetectionRange: 25
+  AttackRange: 20
   KnownTargetTimeout: 12
   Animator: {fileID: 0}
 --- !u!1 &6421371450313891992
@@ -786,8 +786,8 @@ MonoBehaviour:
   ShootType: 1
   ProjectilePrefab: {fileID: 8924682559891268397, guid: adc7e9f6b32b5544bb6cdf99ad24a209,
     type: 3}
-  DelayBetweenShots: 0.8
-  BulletSpreadAngle: 0
+  DelayBetweenShots: 1
+  BulletSpreadAngle: 1
   BulletsPerShot: 1
   RecoilForce: 1
   AimZoomRatio: 1
@@ -799,9 +799,9 @@ MonoBehaviour:
   EjectionPort: {fileID: 0}
   ShellCasingEjectionForce: 2
   ShellPoolSize: 1
-  AmmoReloadRate: 0.5
-  AmmoReloadDelay: 0.5
-  MaxAmmo: 100
+  AmmoReloadRate: 100
+  AmmoReloadDelay: 6
+  MaxAmmo: 3
   AutomaticReleaseOnCharged: 0
   MaxChargeDuration: 2
   AmmoUsedOnStartCharge: 1
@@ -1754,6 +1754,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.m_NumColorKeys
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7951582856014658560, guid: 3f5b545b9a1e74c418b061bba5bb9e2c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f5b545b9a1e74c418b061bba5bb9e2c, type: 3}

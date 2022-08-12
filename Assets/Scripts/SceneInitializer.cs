@@ -8,7 +8,6 @@ public class SceneInitializer : MonoBehaviour
 	public const int MAP_SIZE_Y = 30;
 
     public const int ONE_TILE_SIZE = 3;
-	public const int ENEMY_NUM = 3;
 	public const int ITEM_NUM = 3;
 
 	public const int MAX_ROOM_NUMBER = 6;
@@ -19,6 +18,8 @@ public class SceneInitializer : MonoBehaviour
 	private GameObject floorPrefab;
 	private GameObject wallPrefab;
 	private GameObject enemyPrefab;
+
+	public int enemyNum = 3;
 
 	private string enemyObject;
 
@@ -35,7 +36,7 @@ public class SceneInitializer : MonoBehaviour
 
 	private void GenerateMap()
 	{
-		map = new MapGenerator().GenerateMap(MAP_SIZE_X, MAP_SIZE_Y, MAX_ROOM_NUMBER, ENEMY_NUM, ITEM_NUM);
+		map = new MapGenerator().GenerateMap(MAP_SIZE_X, MAP_SIZE_Y, MAX_ROOM_NUMBER, enemyNum + Random.Range(-2, 3), ITEM_NUM);
 
 		/*
 		string log = "";
@@ -108,6 +109,11 @@ public class SceneInitializer : MonoBehaviour
 		{
 			_health = enemy.GetComponent<Health>();
 			_health.MaxHealth += StaticData.floor * 10;
+		}
+
+		if(StaticData.floor % 3 == 0)
+        {
+			enemyNum++;
 		}
 	}
 

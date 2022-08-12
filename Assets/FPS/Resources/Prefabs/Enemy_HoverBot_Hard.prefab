@@ -473,8 +473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DetectionSourcePoint: {fileID: 6571005840976436832}
-  DetectionRange: 20
-  AttackRange: 10
+  DetectionRange: 25
+  AttackRange: 20
   KnownTargetTimeout: 12
   Animator: {fileID: 0}
 --- !u!1 &6421371450313891992
@@ -786,7 +786,7 @@ MonoBehaviour:
   ShootType: 1
   ProjectilePrefab: {fileID: 8924682559891268397, guid: 08d4768da0c837b4192593f5b6b91683,
     type: 3}
-  DelayBetweenShots: 0.8
+  DelayBetweenShots: 0.9
   BulletSpreadAngle: 0
   BulletsPerShot: 1
   RecoilForce: 1
@@ -801,7 +801,7 @@ MonoBehaviour:
   ShellPoolSize: 1
   AmmoReloadRate: 0.5
   AmmoReloadDelay: 0.5
-  MaxAmmo: 100
+  MaxAmmo: 4
   AutomaticReleaseOnCharged: 0
   MaxChargeDuration: 2
   AmmoUsedOnStartCharge: 1
