@@ -72,8 +72,11 @@ namespace Unity.FPS.AI
         [Header("Loot")] [Tooltip("The object this enemy can drop when dying")]
         public GameObject LootPrefab;
 
+        [Tooltip("The Number of object this enemy can drop when dying")]
+        public int LootItemNum;
+
         [Tooltip("The chance the object has to drop")] [Range(0, 1)]
-        public float DropRate = 1f;
+        public float DropRate = 0.5f;
 
         [Header("Debug Display")] [Tooltip("Color of the sphere gizmo representing the path reaching range")]
         public Color PathReachingRangeColor = Color.yellow;
@@ -198,6 +201,31 @@ namespace Unity.FPS.AI
                 m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock,
                     m_EyeRendererData.MaterialIndex);
             }
+
+            string loot = "";
+            int rand = Random.Range(0, LootItemNum);
+            if (rand == 0)
+            {
+                loot = "Prefabs/Pickup_Attack";
+            }
+            else if (rand == 1)
+            {
+                loot = "Prefabs/Pickup_AttackPart";
+            }
+            else if (rand == 2)
+            {
+                loot = "Prefabs/Pickup_Potion";
+            }
+            else if (rand == 3)
+            {
+                loot = "Prefabs/Pickup_Rapid";
+            }
+            else if (rand == 4)
+            {
+                loot = "Prefabs/Pickup_SpeedPart";
+            }
+
+            LootPrefab = Resources.Load(loot) as GameObject;
         }
 
         void Update()

@@ -22,5 +22,6 @@ public class FloorController : MonoBehaviour
     public void nextFloor()
     {
         StaticData.floor++;
+        
     }
 }
