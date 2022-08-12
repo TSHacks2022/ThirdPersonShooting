@@ -11,8 +11,6 @@ public class ItemStaticData : ScriptableObject
     {"AttackPart", 400},
     {"SpeedPart", 300},
     {"RapidPart", 100},
-    {"Attack", 0},
-    {"Rapid", 0},
   };
   
 }

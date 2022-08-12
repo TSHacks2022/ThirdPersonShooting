@@ -37,30 +37,6 @@ public class SceneInitializer : MonoBehaviour
 	private void GenerateMap()
 	{
 		map = new MapGenerator().GenerateMap(MAP_SIZE_X, MAP_SIZE_Y, MAX_ROOM_NUMBER, enemyNum + Random.Range(-2, 3), ITEM_NUM);
-
-		/*
-		string log = "";
-		for (int y = 0; y < MAP_SIZE_Y; y++)
-		{
-			for (int x = 0; x < MAP_SIZE_X; x++)
-			{
-				if(map[x, y] == 1)
-                {
-					log += "1";
-				}
-				else if(map[x, y] == 2)
-                {
-					log += "2";
-                }
-                else
-                {
-					log += " ";
-                }
-			}
-			log += "\n";
-		}
-		Debug.Log(log);
-		*/
 	}
 
 	private void InstantiateMap()
@@ -142,23 +118,23 @@ public class SceneInitializer : MonoBehaviour
 
 		if(rand == 0)
         {
-			itemPath = "Prefabs/Pickup_Attack";
+			itemPath = "Prefabs/Pickup_Potion";
 		}
 		else if(rand == 1)
         {
-			itemPath = "Prefabs/Pickup_AttackPart";
+			itemPath = "Prefabs/Pickup_HitPointPart";
 		}
 		else if (rand == 2)
 		{
-			itemPath = "Prefabs/Pickup_Potion";
+			itemPath = "Prefabs/Pickup_AttackPart";
 		}
 		else if (rand == 3)
 		{
-			itemPath = "Prefabs/Pickup_Rapid";
+			itemPath = "Prefabs/Pickup_SpeedPart";
 		}
 		else if (rand == 4)
 		{
-			itemPath = "Prefabs/Pickup_SpeedPart";
+			itemPath = "Prefabs/Pickup_RapidPart";
 		}
 
 		item = Resources.Load(itemPath) as GameObject;
