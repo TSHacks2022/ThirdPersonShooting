@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6275561476046798665}
   - component: {fileID: 4778790861167011728}
   m_Layer: 0
-  m_Name: Pickup_SpeedPrart
+  m_Name: Pickup_SpeedPart
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   RotatingSpeed: 360
   PickupSfx: {fileID: 8300000, guid: 6f3e0904bbbace745bdef08cdbcdfec0, type: 3}
   PickupVfxPrefab: {fileID: 0}
-  ItemName: Potion
+  ItemName: SpeedPart
 --- !u!1001 &7309166704048843521
 PrefabInstance:
   m_ObjectHideFlags: 0
