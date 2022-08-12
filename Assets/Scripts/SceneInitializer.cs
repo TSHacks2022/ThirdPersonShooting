@@ -103,14 +103,13 @@ public class SceneInitializer : MonoBehaviour
 
 	private void EnemySelect()
     {
-		if(StaticData.floor / 5 + 1 < 1)
+		if(StaticData.floor <= 5)
         {
 			enemyObject = "Prefabs/Enemy_HoverBot_Easy";
 		}
-		else if(StaticData.floor / 5 + 1 < 2)
+		else if(StaticData.floor <= 10)
         {
 			enemyObject = "Prefabs/Enemy_HoverBot_Normal";
-
 		}
 		else
 		{
@@ -120,18 +119,7 @@ public class SceneInitializer : MonoBehaviour
 
 	private void BossSelect()
 	{
-		if (StaticData.floor / 5 < 1)
-		{
-			bossObject = "Prefabs/Enemy_Turret";
-		}
-		else if (StaticData.floor / 5 < 2)
-		{
-			bossObject = "Prefabs/Enemy_Turret";
-		}
-		else
-		{
-			bossObject = "Prefabs/Enemy_Turret";
-		}
+		bossObject = "Prefabs/Enemy_Turret";
 	}
 
 	private GameObject ItemSelect()
